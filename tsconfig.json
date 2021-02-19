@@ -1,3 +1,4 @@
+// npx tsc --init to initialize tsconfig.json file
 {
 	"compilerOptions": {
 		"target": "ES6",
@@ -7,7 +8,9 @@
 		"isolatedModules": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
-		"jsx": "react"
+		"jsx": "react",
+		"removeComments": true
+		// "sourceMap": true  /* for ts-loader | to use source maps */
 	},
 	"include": ["./src/**/*"]
 }
