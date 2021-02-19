@@ -1,0 +1,42 @@
+.pizza {
+	display: flex;
+	justify-content: center;
+
+	max-width: 800px;
+
+	padding: 0 15px;
+	margin: 0 auto;
+}
+
+/* .pizza-container__main-div {
+	text-align: center;
+}
+
+.pizza-container__ul {
+	list-style: none;
+} */
+
+/* 
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.header {
+  margin: 0 0 50px;
+  text-align: center;
+}
+
+.siteTitle {
+  font-size: 32px;
+  margin: 0 0 10px;
+}
+
+.pizzaList {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+}
+
+*/

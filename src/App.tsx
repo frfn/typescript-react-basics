@@ -1,6 +1,7 @@
 import React from "react";
 import pizzas from "./data/pizzas.json";
 import Pizza from "./components/Pizza";
+import styles from "./App.module.css";
 
 const App = () => {
 	// (window as any).hello();  /* to simulate source mapping error for TS */
@@ -9,15 +10,17 @@ const App = () => {
 
 	if (pizzas) {
 		content = (
-			<ul>
-				{pizzas.map((pizza) => {
-					return <Pizza key={pizza.id} pizza={pizza} />;
-				})}
-			</ul>
+			<div className={styles["pizza-container__main-div"]}>
+				<ul className={styles["pizza-container__ul"]}>
+					{pizzas.map((pizza) => {
+						return <Pizza key={pizza.id} pizza={pizza} />;
+					})}
+				</ul>
+			</div>
 		);
 	}
 
-	return <div>{content}</div>;
+	return <div className={styles.pizza}>{content}</div>;
 };
 
 export default App;

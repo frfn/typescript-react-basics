@@ -1,4 +1,6 @@
+// 3rd Party Plugins
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
 	entry: "./src/index.tsx",
@@ -13,6 +15,14 @@ module.exports = {
 				loader: "babel-loader",
 				exclude: /node_modules/,
 			},
+			{
+				test: /\.css$/,
+				exclude: /node_modules/,
+				use: [
+					MiniCssExtractPlugin.loader,
+					{ loader: "css-loader", options: { modules: true } },
+				],
+			},
 		],
 	},
 	plugins: [
@@ -20,5 +30,6 @@ module.exports = {
 			template: "./src/index.html",
 			filename: "index.html",
 		}),
+		new MiniCssExtractPlugin(),
 	],
 };
