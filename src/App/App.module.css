@@ -1,4 +1,4 @@
-.pizza {
+.pizza-container {
 	display: flex;
 	justify-content: center;
 
@@ -8,13 +8,13 @@
 	margin: 0 auto;
 }
 
-/* .pizza-container__main-div {
+.pizza-container__main-div {
 	text-align: center;
 }
 
 .pizza-container__ul {
 	list-style: none;
-} */
+}
 
 /* 
 .container {
