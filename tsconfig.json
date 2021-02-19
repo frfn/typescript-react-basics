@@ -9,8 +9,10 @@
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"jsx": "react",
-		"removeComments": true
+		"removeComments": true,
 		// "sourceMap": true  /* for ts-loader | to use source maps */
+		"moduleResolution": "Node",
+		"resolveJsonModule": true
 	},
 	"include": ["./src/**/*"]
 }
