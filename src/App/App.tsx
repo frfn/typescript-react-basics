@@ -12,6 +12,10 @@ import styles from "./App.module.css";
 
 // SVG
 import PizzaSVG from "../assets/svg/pizza.svg";
+/* 
+width={120} height={120} to customize size in <PizzaSVG />
+else no props for default size!
+*/
 
 const App = () => {
 	// (window as any).hello();  /* to simulate source mapping error for TS */
@@ -38,7 +42,7 @@ const App = () => {
 				<Toolbar navigations={navLinks} />
 
 				<div className={styles["food-container__header"]}>
-					<PizzaSVG width={120} height={120} />
+					<PizzaSVG width={180} height={180} />
 					<div className={styles["food-container__site-title"]}>
 						Delicious Pizza
 					</div>
