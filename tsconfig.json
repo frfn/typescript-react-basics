@@ -11,10 +11,13 @@
 		"jsx": "react",
 		"removeComments": true,
 		// "sourceMap": true  /* for ts-loader | to use source maps */
+
+		// if you hace resolveJsonModule to "true", you MUST set moduleResolution to "Node"
 		"moduleResolution": "Node",
 		"resolveJsonModule": true,
 		"plugins": [
 			{
+				// this was just copy and pasted from the typescript-plugin-css-modules docs
 				"name": "typescript-plugin-css-modules",
 				"options": {
 					"classnameTransform": "dashes",
