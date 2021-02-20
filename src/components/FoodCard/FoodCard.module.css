@@ -1,4 +1,4 @@
-.pizza-container {
+.food-container {
 	box-sizing: border-box;
 
 	background-color: white;
@@ -12,15 +12,15 @@
 	padding: 10px 20px;
 }
 
-.pizza-container__h2 {
+.food-container__h2 {
 	margin-bottom: 10px;
 }
 
-.pizza-container__p--desc {
+.food-container__p--desc {
 	font-size: 130%;
 }
 
-.pizza-container__p--price {
+.food-container__p--price {
 	font-size: 150%;
 	font-weight: 300;
 }

@@ -1,0 +1,35 @@
+.toolbar-container {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+
+	width: 100%;
+	height: 70px;
+
+	position: fixed;
+	top: 0;
+	left: 0;
+
+	background: black;
+	color: white;
+}
+
+.toolbar-container__ul {
+	display: flex;
+	list-style: none;
+}
+
+.toolbar-container__li {
+	padding-right: 50px;
+}
+
+.toolbar-container__a:visited,
+.toolbar-container__a:link {
+	color: white;
+	text-decoration: none;
+}
+
+.toolbar-container__a:hover,
+.toolbar-container__a:active {
+	color: red;
+}

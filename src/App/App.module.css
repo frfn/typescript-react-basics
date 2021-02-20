@@ -1,18 +1,14 @@
-.pizza-container {
+.food-container {
 	display: flex;
 	justify-content: center;
 
 	max-width: 800px;
 
 	padding: 0 15px;
-	margin: 0 auto;
+	margin: 70px auto 80px;
 }
 
-.pizzas-container__main-div {
-	/* text-align: center; */
-}
-
-.pizzas-container__ul {
+.food-container__ul {
 	list-style: none;
 	margin-bottom: 20px;
 	padding: 0;
