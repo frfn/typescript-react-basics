@@ -16,7 +16,7 @@ module.exports = {
 				loader: "babel-loader",
 				exclude: /node_modules/,
 			},
-			// you need this so that Webpack can handle CSS files
+			// this is the css-loader, you need this
 			{
 				test: /\.css$/,
 				exclude: /node_modules/,
@@ -24,6 +24,19 @@ module.exports = {
 					MiniCssExtractPlugin.loader,
 					{ loader: "css-loader", options: { modules: true } },
 				],
+			},
+			// this is the image | svg loaders, you need this
+			{
+				test: /.svg$/,
+				exclude: /node_modules/,
+				loader: "@svgr/webpack",
+				options: {
+					svgoConfig: {
+						plugins: {
+							removeViewBox: false,
+						},
+					},
+				},
 			},
 		],
 	},

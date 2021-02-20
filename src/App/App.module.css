@@ -5,11 +5,20 @@
 	max-width: 800px;
 
 	padding: 0 15px;
-	margin: 70px auto 80px;
+	margin: 80px auto 80px;
 }
 
 .food-container__ul {
 	list-style: none;
 	margin-bottom: 20px;
 	padding: 0;
+}
+
+.food-container__header {
+	text-align: center;
+}
+
+.food-container__site-title {
+	margin-top: 20px;
+	font-size: 32px;
 }

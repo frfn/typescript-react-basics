@@ -10,6 +10,9 @@ import Toolbar from "../components/Toolbar/Toolbar";
 // CSS
 import styles from "./App.module.css";
 
+// SVG
+import PizzaSVG from "../assets/svg/pizza.svg";
+
 const App = () => {
 	// (window as any).hello();  /* to simulate source mapping error for TS */
 
@@ -33,6 +36,14 @@ const App = () => {
 		content = (
 			<div>
 				<Toolbar navigations={navLinks} />
+
+				<div className={styles["food-container__header"]}>
+					<PizzaSVG width={120} height={120} />
+					<div className={styles["food-container__site-title"]}>
+						Delicious Pizza
+					</div>
+				</div>
+
 				<ul className={styles["food-container__ul"]}>
 					{pizzas.map((pizza) => {
 						return <FoodCard key={pizza.id} food={pizza} />;
