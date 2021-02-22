@@ -6,6 +6,7 @@ import pizzas from "../data/pizzas.json";
 // Components
 import FoodCard from "../components/FoodCard/FoodCard";
 import Toolbar from "../components/Toolbar/Toolbar";
+import Cart from "../components/Cart/Cart";
 
 // CSS
 import styles from "./App.module.css";
@@ -46,6 +47,7 @@ const App = () => {
 					<div className={styles["food-container__site-title"]}>
 						Delicious Pizza
 					</div>
+					<Cart />
 				</div>
 
 				<ul className={styles["food-container__ul"]}>

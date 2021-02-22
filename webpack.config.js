@@ -30,6 +30,7 @@ module.exports = {
 				test: /.svg$/,
 				exclude: /node_modules/,
 				loader: "@svgr/webpack",
+				// svg is cropped by default, set removeViewBox to false
 				options: {
 					svgoConfig: {
 						plugins: {

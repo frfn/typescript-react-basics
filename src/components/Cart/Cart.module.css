@@ -1,0 +1,63 @@
+/* -- container -- */
+.cart-container {
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+
+	position: relative;
+}
+
+/* -- drop down ul -- */
+.cart-container__cart-drop-down {
+	background: white;
+	box-shadow: 0 1px 7px rgba(0, 0, 0, 0.2);
+
+	position: absolute;
+	left: 50%;
+	top: 200%;
+
+	/* centering hack */
+	transform: translate(-50%, -50%);
+
+	padding: 5px 15px;
+
+	width: 140px;
+
+	text-align: left;
+}
+
+.cart-container__cart-drop-down ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.cart-container__cart-drop-down li {
+	border-bottom: 1px solid #ccc;
+	padding: 7px 0px;
+}
+.cart-container__cart-drop-down li:last-child {
+	border-bottom: 0;
+}
+
+/* -- button -- */
+.cart-container__button {
+	margin-top: 20px;
+
+	font-size: 20px;
+
+	background: none;
+
+	border: none;
+
+	padding: 0;
+
+	display: flex;
+	align-items: center;
+
+	cursor: pointer;
+}
+
+/* -- SVG Photo -- */
+.button svg {
+	margin: 0 5px 0 0;
+}
