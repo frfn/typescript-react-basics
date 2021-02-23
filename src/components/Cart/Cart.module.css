@@ -14,14 +14,14 @@
 
 	position: absolute;
 	left: 50%;
-	top: 160%;
+	top: 100%;
 
 	/* centering hack */
-	transform: translate(-50%, -50%);
+	transform: translateX(-50%);
 
 	padding: 5px 15px;
 
-	width: 140px;
+	width: 250px;
 
 	text-align: left;
 }
@@ -32,6 +32,9 @@
 	padding: 0;
 }
 .cart-container__cart-drop-down li {
+	display: flex;
+	justify-content: space-between;
+
 	border-bottom: 1px solid #ccc;
 	padding: 7px 0px;
 }

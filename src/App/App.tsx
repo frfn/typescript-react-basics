@@ -15,9 +15,6 @@ import styles from "./App.module.css";
 import PizzaSVG from "../assets/svg/pizza.svg";
 /* ßwidth={120} height={120} to customize size in <PizzaSVG /> else no props for default size! */
 
-// Context API
-import { AppStateContext } from "../context/AppState";
-
 const App: React.FC = (props) => {
 	// (window as any).hello();  /* to simulate source mapping error for TS */
 
@@ -32,13 +29,11 @@ const App: React.FC = (props) => {
 	// an array of object
 	type Navigations = Navigation[];
 
+	// using the Navigations type
 	const navLinks: Navigations = [
 		{ title: "Example One", link: "#e1" },
 		{ title: "Example Two", link: "#e2" },
 	];
-
-	// useContext
-	const appStateContext = useContext(AppStateContext);
 
 	if (pizzas) {
 		content = (
