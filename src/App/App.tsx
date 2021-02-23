@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 // JSON data
 import pizzas from "../data/pizzas.json";
@@ -13,12 +13,12 @@ import styles from "./App.module.css";
 
 // SVG
 import PizzaSVG from "../assets/svg/pizza.svg";
-/* 
-width={120} height={120} to customize size in <PizzaSVG />
-else no props for default size!
-*/
+/* ßwidth={120} height={120} to customize size in <PizzaSVG /> else no props for default size! */
 
-const App = () => {
+// Context API
+import { AppStateContext } from "../context/AppState";
+
+const App: React.FC = (props) => {
 	// (window as any).hello();  /* to simulate source mapping error for TS */
 
 	let content = <div className={styles["food-container"]}>No Content</div>;
@@ -36,6 +36,9 @@ const App = () => {
 		{ title: "Example One", link: "#e1" },
 		{ title: "Example Two", link: "#e2" },
 	];
+
+	// useContext
+	const appStateContext = useContext(AppStateContext);
 
 	if (pizzas) {
 		content = (

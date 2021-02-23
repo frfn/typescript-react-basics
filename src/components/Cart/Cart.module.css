@@ -14,7 +14,7 @@
 
 	position: absolute;
 	left: 50%;
-	top: 200%;
+	top: 160%;
 
 	/* centering hack */
 	transform: translate(-50%, -50%);
@@ -44,17 +44,28 @@
 	margin-top: 20px;
 
 	font-size: 20px;
+	color: white;
 
-	background: none;
+	background: #fab1a0;
 
-	border: none;
+	border: 1px solid #dfe6e9;
+	border-radius: 20px;
+	outline: none;
 
-	padding: 0;
+	padding: 10px 30px;
 
 	display: flex;
 	align-items: center;
 
 	cursor: pointer;
+}
+
+.cart-container__button:hover {
+	opacity: 0.8;
+}
+
+.cart-container__button:active {
+	background: rgba(255, 104, 104, 0.906);
 }
 
 /* -- SVG Photo -- */

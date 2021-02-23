@@ -21,7 +21,10 @@ const Toolbar: React.FC<Props> = ({ navigations }) => {
 			<ul className={styles["toolbar-container__ul"]}>
 				{navigations.map((navLink) => {
 					return (
-						<li className={styles["toolbar-container__li"]}>
+						<li
+							key={navLink.title}
+							className={styles["toolbar-container__li"]}
+						>
 							<a
 								className={styles["toolbar-container__a"]}
 								href={navLink.link}

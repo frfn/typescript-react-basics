@@ -12,6 +12,8 @@
 
 	background: black;
 	color: white;
+
+	z-index: 999;
 }
 
 .toolbar-container__ul {
