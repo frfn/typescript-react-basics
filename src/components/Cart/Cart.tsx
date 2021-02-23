@@ -97,28 +97,34 @@ class Cart extends React.Component<Props, State> {
 					<div className={styles["cart-container__cart-drop-down"]}>
 						<ul>
 							{/* we have to explicitly typesafe item because we used the static contextType approach */}
-							{this.context.cart.items.map(
-								(item: {
-									id: number;
-									name: string;
-									price: number;
-									quantity: number;
-								}) => {
-									return (
-										<li key={item.id}>
-											<div>
-												{item.name} – $
-												{item.price.toFixed(2)}
-											</div>
+							{this.context.cart.items.length > 0 ? (
+								this.context.cart.items.map(
+									(item: {
+										id: number;
+										name: string;
+										price: number;
+										quantity: number;
+									}) => {
+										return (
+											<li key={item.id}>
+												<div>
+													{item.name} – $
+													{item.price.toFixed(2)}
+												</div>
 
-											<div>
-												&times;{" "}
-												{item.quantity &&
-													`${item.quantity}`}
-											</div>
-										</li>
-									);
-								}
+												<div>
+													&times;{" "}
+													{item.quantity &&
+														`${item.quantity}`}
+												</div>
+											</li>
+										);
+									}
+								)
+							) : (
+								<li style={{ justifyContent: "center" }}>
+									Empty Cart! Please add food!
+								</li>
 							)}
 						</ul>
 					</div>

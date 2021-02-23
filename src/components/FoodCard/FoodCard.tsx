@@ -19,12 +19,19 @@ interface Food {
 
 const FoodCard: React.FC<Props> = ({ food }) => {
 	// context
-	const setState = useSetState(); // useSetState is an arrow function, must be executed!
+	const setState = useSetState(); // useSetState is an arrow function, must be executed | when it is, the value is NOW setState because of the provider
+
+	/* 
+	HERE:
+	imagine that you were to just call the useContext() here, 
+	- it fills the context with the setState function because of useContext()
+	- since the index.tsx component is wrapped with the AppStateProvider component, it gives the AppSetStateContext value
+	
+	it is the same concept when used in AppState.tsx
+	*/
 
 	// function to add to cart
-	const onAddToCart = (
-		event?: React.MouseEvent<HTMLButtonElement, MouseEvent>
-	): void => {
+	const onAddToCart = () => {
 		// console.log(food); /* we see the description is on here as well, not compatible with the structure of the state used in AppState.tsx */
 
 		// Cannot invoke an object which is possibly 'undefined', that is why it is inside an `if` statement | not anymore, it a custom hook, it checks to see if setState is undefined!

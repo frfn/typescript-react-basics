@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { useState, createContext, useContext } from "react";
 
 /* -- Data for Context | this is how you type safe, yes you can create a shorter way. by default, but this is what must be done-- */
 interface IAppStateValue {
@@ -13,7 +13,7 @@ const DefaultAppState: IAppStateValue = {
 	},
 };
 
-/* -- Props -- */
+/* -- Props, this can be deletd tbh, just for me to see -- */
 interface Props {
 	children?: React.ReactNode; // copied from hovering over "props"
 }
@@ -28,6 +28,15 @@ export const AppSetStateContext = createContext<
 
 // 3. Custom Hook | outsourced so it is less bloated in FoodCard.tsx & to check if it is undefined!
 export const useSetState = () => {
+	// the useContext, FILLS in the information from the createContext.
+	// at first it is undefined, but when given the value at the bottom, it WILL HAVE a value
+
+	// AppSetStateContext.Provider value={setState} gives the `value` of setState
+	// when using useSetState in FoodCard.tsx, it WILL be the setState function because the component is WRAPPED with the provider
+
+	// this here just gives it a structure, the provider down below gives it its value
+
+	// when useContext is called, useContext is going to retreive the value from the .Provider and FILL IN this structure, giving the createContext the setState function
 	const setState = useContext(AppSetStateContext);
 	if (!setState) {
 		throw new Error(
@@ -35,6 +44,7 @@ export const useSetState = () => {
 		);
 	}
 
+	// and being able to return the function if it is not undefined.
 	return setState;
 };
 
