@@ -1,11 +1,15 @@
-import React, { useReducer, useState, createContext, useContext } from "react";
+import React, {
+	useReducer /* useState */,
+	createContext,
+	useContext,
+} from "react";
 
 /* -- Interface for Context -- */
 interface CartItem {
 	id: number;
 	name: string;
 	price: number;
-	quantity: number; // object []
+	quantity: number;
 }
 
 interface IAppStateValue {
@@ -84,6 +88,7 @@ interface Action<T> {
 interface AddToCartAction extends Action<"ADD_TO_CART"> {
 	payload: {
 		item: CartItem;
+		//Omit<CartItem,"quantity">; /* | '...' , union to omit more props! */
 	};
 }
 export const reducer = (state: IAppStateValue, action: AddToCartAction) => {
@@ -122,11 +127,15 @@ export const reducer = (state: IAppStateValue, action: AddToCartAction) => {
 						: // this is _already_ an array |
 						  [
 								...state.cart.items,
+								itemToAdd,
 								// you can't do .push() because it is incompatible with the structure, in normal ReactJS, it is possible, but we're in TS
-								{
+
+								// it is settled in onAddToCart() in FoodCard.tsx | but ath the end, this is the solution he came up with
+
+								/* {
 									...itemToAdd,
 									quantity: 1,
-								},
+								}, */
 						  ],
 				},
 			};

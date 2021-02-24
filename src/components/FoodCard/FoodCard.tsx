@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import styles from "./FoodCard.module.css";
 
-// Context API
-import { useSetState } from "../../context/AppState";
+// Context API | the dispatch
+import { useStateDipatch } from "../../context/AppState";
 
 // 1. name the props that will be passed in
 interface Props {
@@ -18,8 +18,23 @@ interface Food {
 }
 
 const FoodCard: React.FC<Props> = ({ food }) => {
+	// custom hook
+	const dispatch = useStateDipatch();
+
 	// function to add to cart
-	const onAddToCart = () => {};
+	const onAddToCart = () => {
+		dispatch({
+			type: "ADD_TO_CART",
+			payload: {
+				item: {
+					id: food.id,
+					name: food.name,
+					price: food.price,
+					quantity: 1,
+				},
+			},
+		});
+	};
 
 	return (
 		<li className={styles["food-container"]}>
