@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import styles from "./FoodCard.module.css";
 
+import { Food } from "../../types";
+
 // Context API | the dispatch
 import { useStateDipatch } from "../../context/AppState";
 
@@ -9,13 +11,14 @@ interface Props {
 	food: Food; // Food should have id, name, description, price | it's initialized down below!
 }
 
+/* udpate: exported out to types.ts */
 // 2. for each prop passed in, what does it contain
-interface Food {
-	id: number; // used for key
-	name: string;
-	description: string;
-	price: number;
-}
+// interface Food {
+// 	id: number; // used for key
+// 	name: string;
+// 	description: string;
+// 	price: number;
+// }
 
 const FoodCard: React.FC<Props> = ({ food }) => {
 	// custom hook | provides the dipatch intitialized in AppState.tsx as well as check to see if undefined

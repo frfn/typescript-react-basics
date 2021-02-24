@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
 
+import { Food } from "../types";
+
 // JSON data
 import pizzas from "../data/pizzas.json";
 
@@ -14,6 +16,9 @@ import styles from "./App.module.css";
 // SVG
 import PizzaSVG from "../assets/svg/pizza.svg";
 /* ßwidth={120} height={120} to customize size in <PizzaSVG /> else no props for default size! */
+
+// HoC
+import SpecialOffer from "../hoc/SpecialOffer/SpecialOffer";
 
 const App: React.FC = (props) => {
 	// (window as any).hello();  /* to simulate source mapping error for TS */
@@ -35,6 +40,18 @@ const App: React.FC = (props) => {
 		{ title: "Example Two", link: "#e2" },
 	];
 
+	/* 
+	const specialOfferFood: Food = {
+		id: 999,
+		name: "Special Today!",
+		description: "New Pizza! Try now!",
+		price: 17.99,
+	}; 
+	*/
+
+	const specialOfferFood = pizzas.find((food) => food.specialOffer);
+	const normalOfferFood = pizzas.filter((food) => !food.specialOffer);
+
 	if (pizzas) {
 		content = (
 			<div>
@@ -48,8 +65,10 @@ const App: React.FC = (props) => {
 					<Cart />
 				</div>
 
+				{specialOfferFood && <SpecialOffer food={specialOfferFood} />}
+
 				<ul className={styles["food-container__ul"]}>
-					{pizzas.map((pizza) => {
+					{normalOfferFood.map((pizza) => {
 						return <FoodCard key={pizza.id} food={pizza} />;
 					})}
 				</ul>
