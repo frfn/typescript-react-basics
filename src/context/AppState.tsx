@@ -1,12 +1,13 @@
 import React, { useState, createContext, useContext } from "react";
 
-/* -- Data for Context | this is how you type safe, yes you can create a shorter way. by default, but this is what must be done-- */
+/* -- Interface for Context -- */
 interface IAppStateValue {
 	cart: {
 		items: { id: number; name: string; price: number; quantity: number }[]; // object []
 	};
 }
 
+/* -- created an obj of type IAppStateValue -- */
 const DefaultAppState: IAppStateValue = {
 	cart: {
 		items: [],
@@ -46,6 +47,8 @@ export const useSetState = () => {
 
 	// and being able to return the function if it is not undefined.
 	return setState;
+
+	// this will be FILLED in IF this custom is called in a component that is wrapped with the Provider component!
 };
 
 // 2. the component that will provide the context with data
