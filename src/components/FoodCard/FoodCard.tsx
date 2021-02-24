@@ -18,11 +18,12 @@ interface Food {
 }
 
 const FoodCard: React.FC<Props> = ({ food }) => {
-	// custom hook
+	// custom hook | provides the dipatch intitialized in AppState.tsx as well as check to see if undefined
 	const dispatch = useStateDipatch();
 
 	// function to add to cart
 	const onAddToCart = () => {
+		/* must take in a type and the payload structure OR ERROR */
 		dispatch({
 			type: "ADD_TO_CART",
 			payload: {
@@ -53,6 +54,8 @@ const FoodCard: React.FC<Props> = ({ food }) => {
 export default FoodCard;
 
 /* 
+	This was the code previously... very messy!
+
 	HERE:
 	imagine that you were to just call the useContext() here, 
 	- it fills the context with the setState function because of useContext()

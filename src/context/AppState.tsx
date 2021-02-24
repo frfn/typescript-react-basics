@@ -2,6 +2,7 @@ import React, {
 	useReducer /* useState */,
 	createContext,
 	useContext,
+	useEffect,
 } from "react";
 
 /* -- Interface for Context -- */
@@ -45,14 +46,14 @@ export const AppDispatchContext /* AppSetStateContext */ = createContext<
 >(undefined);
 
 /* ------------------------------------------------------------------------------------------------ */
-/* 3. Custom Hook | outsourced so it is less bloated in action.payloadCitems.ard.tsx & to check if it is undefined! */
+/* 3. Custom Hook | outsourced so it is less bloated in FoodCard.tsx & to check if it is undefined! */
 /* ------------------------------------------------------------------------------------------------ */
 export const useStateDipatch /* useSetState */ = () => {
-	// the useContext, FILLS in the information from the createContext.
-	// at first it is undefined, but when given the value at the bottom, it WILL HAVE a value
+	// the useContext, FILLS in the information for createContext.
+	// at first it is undefined, but when given the value with Provider programmed at the bottom, it WILL HAVE a value
 
-	// AppSetStateContext.Provider value={setState} gives the `value` of setState
-	// when using useSetState in action.payloadCitems.ard.tsx, it WILL be the setState function because the component is WRAPPED with the provider
+	// AppSetStateContext.Provider value={setState} gives the `value` of dispatch
+	// when using useStateDispatch in FoodCard.tsx, it WILL be the useStateDispatch function because the component is WRAPPED with the provider
 
 	// this here just gives it a structure, the provider down below gives it its value
 
@@ -91,8 +92,24 @@ interface AddToCartAction extends Action<"ADD_TO_CART"> {
 		//Omit<CartItem,"quantity">; /* | '...' , union to omit more props! */
 	};
 }
-export const reducer = (state: IAppStateValue, action: AddToCartAction) => {
+
+interface initializeCartAction extends Action<"INITIALIZE_CART"> {
+	payload: {
+		cart: IAppStateValue["cart"]; // === cart: { items: CartItem[]; }
+	};
+}
+
+// adding more than one action? Use a union!
+export const reducer = (
+	state: IAppStateValue,
+	action: initializeCartAction | AddToCartAction
+) => {
 	switch (action.type) {
+		case "INITIALIZE_CART":
+			const newState = { cart: action.payload.cart };
+
+			return { ...state, ...newState };
+
 		// if case "ADD_TO_CART", either create a new obj and put in array or update obj quantity
 		case "ADD_TO_CART":
 			// creating a variable to easily handle the object
@@ -155,6 +172,31 @@ const AppStateProvider: React.FC<Props> = ({ children }) => {
 		reducer,
 		DefaultAppState
 	); /* useState(DefaultAppState); */
+
+	/* -------------------------------------------------------------------------------------------------- */
+	/* 5. useEffect & local storage | the order of the useEffect is VERY IMPORTANT, not ordered, no data! */
+	/* -------------------------------------------------------------------------------------------------- */
+
+	// if 2. is called first, it sets the data to an EMPTY cart
+
+	// 1. loads the existing cart first!
+	useEffect(() => {
+		const existingCart = localStorage.getItem("cart");
+		if (existingCart) {
+			dispatch({
+				type: "INITIALIZE_CART",
+				payload: {
+					// parsing is needed since the item is JSON stringified!
+					cart: JSON.parse(existingCart),
+				},
+			});
+		}
+	}, []); // only render once, componentDidMount()
+
+	// 2. if cart changes then rewrites the cart!!
+	useEffect(() => {
+		localStorage.setItem("cart", JSON.stringify(state.cart));
+	}, [state.cart]); // only rerender when state.cart is changed, componentDidUpdate()
 
 	return (
 		// cart is used in App.tsx | setCart is used in action.payloadCitems.ard.tsx
