@@ -1,43 +1,32 @@
 import React, { useContext } from "react";
 import styles from "./FoodCard.module.css";
 
-import { Food } from "../../types";
+import { Food } from "../../types"; // TS Interface Type
 
-// Context API | the dispatch
-import { useStateDipatch } from "../../context/AppState";
+import withAddToCart from "../../hoc/withAddToCart/withAddToCart"; // HoC
+
+// import { CartItem, useStateDipatch } from "../../context/AppState"; /* Context API | the dispatch */
+import { withAddToCartProps } from "../../hoc/withAddToCart/withAddToCart";
 
 // 1. name the props that will be passed in
-interface Props {
-	food: Food; // Food should have id, name, description, price | it's initialized down below!
+interface Props extends withAddToCartProps {
+	food: Food; // Food type should have id, name, description, price | it's initialized and OUTSOURCED in types.ts!
 }
 
-/* udpate: exported out to types.ts */
-// 2. for each prop passed in, what does it contain
-// interface Food {
-// 	id: number; // used for key
-// 	name: string;
-// 	description: string;
-// 	price: number;
-// }
-
-const FoodCard: React.FC<Props> = ({ food }) => {
-	// custom hook | provides the dipatch intitialized in AppState.tsx as well as check to see if undefined
-	const dispatch = useStateDipatch();
-
-	// function to add to cart
-	const onAddToCart = () => {
-		/* must take in a type and the payload structure OR ERROR */
-		dispatch({
-			type: "ADD_TO_CART",
-			payload: {
-				item: {
-					id: food.id,
-					name: food.name,
-					price: food.price,
-					quantity: 1,
-				},
-			},
-		});
+// onAddToCart comes from the HoC, it passed on a function called onAddToCart to this component, which is the CHILD COMPONENT!
+const FoodCard: React.FC<Props> = ({ food, onAddToCart }) => {
+	const onHandleAddToCart = () => {
+		// if truthy, execute
+		if (onAddToCart) {
+			onAddToCart({
+				id: food.id,
+				name: food.name,
+				price: food.price,
+				quantity: 1,
+			});
+		} else {
+			throw new Error("Cannot add!");
+		}
 	};
 
 	return (
@@ -47,14 +36,23 @@ const FoodCard: React.FC<Props> = ({ food }) => {
 				{food.description}
 			</p>
 			<p className={styles["food-container__p--price"]}>${food.price}</p>
-			<button type="button" onClick={onAddToCart}>
-				Add To Cart
+			<button type="button" onClick={onHandleAddToCart}>
+				{`Add To ${food.name} to Cart`}
 			</button>
 		</li>
 	);
 };
 
-export default FoodCard;
+export default withAddToCart(FoodCard);
+
+/* udpate: exported out to types.ts */
+// 2. for each prop passed in, what does it contain
+// interface Food {
+// 	id: number; // used for key
+// 	name: string;
+// 	description: string;
+// 	price: number;
+// }
 
 /* 
 	This was the code previously... very messy!
@@ -126,4 +124,26 @@ const onAddToCart = () => {
 		};
 	});
 };
+*/
+
+/* 
+	// custom hook | provides the dipatch intitialized in AppState.tsx as well as check to see if undefined
+	const dispatch = useStateDipatch();
+
+	// function to add to cart
+	const onAddToCart = () => {
+		must take in a type and the payload structure OR ERROR
+		dispatch({
+			type: "ADD_TO_CART",
+			payload: {
+				item: {
+					id: food.id,
+					name: food.name,
+					price: food.price,
+					quantity: 1,
+				},
+			},
+		});
+	};
+
 */

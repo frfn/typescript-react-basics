@@ -6,7 +6,7 @@ import React, {
 } from "react";
 
 /* -- Interface for Context -- */
-interface CartItem {
+export interface CartItem {
 	id: number;
 	name: string;
 	price: number;
@@ -166,6 +166,8 @@ export const reducer = (
 /* -------------------------------------------------------- */
 /* 2. the component that will provide the context with data */
 /* -------------------------------------------------------- */
+
+// there are no errors for the Props since children is the only prop we will need, if more props, we MUST create an interface!
 const AppStateProvider: React.FC<Props> = ({ children }) => {
 	// state is an object => {cart: {items: [] } }
 	const [state, dispatch /* setState */] = useReducer(
