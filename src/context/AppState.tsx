@@ -26,7 +26,7 @@ const DefaultAppState: IAppStateValue = {
 	},
 };
 
-/* -- Props, this can be deletd tbh, just for me to see -- */
+/* -- Props, this can be deleted tbh, just for me to see -- */
 interface Props {
 	children?: React.ReactNode; // copied from hovering over "props"
 }
@@ -106,7 +106,7 @@ export const reducer = (
 ) => {
 	switch (action.type) {
 		case "INITIALIZE_CART":
-			const newState = { cart: action.payload.cart };
+			const newState: IAppStateValue = { cart: action.payload.cart };
 
 			return { ...state, ...newState };
 

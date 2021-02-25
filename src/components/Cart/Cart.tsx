@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import styles from "./Cart.module.css";
 
 // react icons
@@ -7,9 +7,9 @@ import { FiShoppingBag } from "react-icons/fi";
 // Context API
 import { AppStateContext } from "../../context/AppState";
 
-// 1. props interface
+// 1. Props interface
 interface Props {
-	// cart: Items /* I didn't do this correctly before, this is why it's here */
+	// cart: Items /* this is now correct, this is why it's here */
 }
 
 /* for above! cart prop will take this in! */
@@ -17,12 +17,12 @@ interface Props {
 // 	items: {id: number, name: string, price: number}[]
 // }
 
-// 2. state interface
+// 2. State interface
 interface State {
 	isOpen: boolean;
 }
 
-// 3. creation of class component, take note of the argument Props, State
+// 3. creation of class component, take note of the argument <Props, State>
 class Cart extends React.Component<Props, State> {
 	// constructor `state` vs just `state`
 	constructor(props: Props) {
@@ -48,13 +48,14 @@ class Cart extends React.Component<Props, State> {
 
 		this.setState((prevState) => {
 			return {
-				...prevState,
+				...prevState, // no need since the only prop is `isOpen`
 				isOpen: !prevState.isOpen,
 			};
 		});
 	};
 
 	// useContext for cart object, so you don't have to use the <AppStateContext.Consumer>{(context) => { JSX }}<AppStateContext.Consumer>
+	// by doing so, the inferring is gone and you may need to explicitly type safe as shown below!
 	static contextType = AppStateContext;
 
 	render() {
@@ -62,7 +63,7 @@ class Cart extends React.Component<Props, State> {
 
 		// if there is a cart object
 		if (this.context.cart.items) {
-			// logic to add the sum of pizza
+			// logic to add the sum of pizza | Sum of ALL Pizzas
 			const sumOfPizza = this.context.cart.items.reduce(
 				(
 					accumulator: number,
@@ -73,14 +74,15 @@ class Cart extends React.Component<Props, State> {
 				0
 			);
 
-			// if the item array length >= 1 else, content stays "Empty Cart"
-			if (sumOfPizza >= 1) {
-				content =
-					// if it is greater than 1, content = .length + " Pizzas" else .length + " Pizza"
-					sumOfPizza > 1
-						? sumOfPizza + " Pizzas"
-						: sumOfPizza + " Pizza";
-			}
+			// ternary expression just saying if sum is 0, then say empty, if 1, then say Pizza, if more than 1, then say Pizzas
+			content =
+				sumOfPizza === 0
+					? "Empty Cart"
+					: sumOfPizza === 1
+					? sumOfPizza + " Pizza"
+					: sumOfPizza > 1
+					? sumOfPizza + " Pizzas"
+					: "Error";
 		}
 
 		return (
@@ -96,7 +98,7 @@ class Cart extends React.Component<Props, State> {
 				{this.state.isOpen && (
 					<div className={styles["cart-container__cart-drop-down"]}>
 						<ul>
-							{/* we have to explicitly typesafe item because we used the static contextType approach */}
+							{/* we have to explicitly typesafe `item` because we used the static contextType approach */}
 							{this.context.cart.items.length > 0 ? (
 								this.context.cart.items.map(
 									(item: {

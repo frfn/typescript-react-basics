@@ -1,6 +1,4 @@
-import React, { useContext } from "react";
-
-import { Food } from "../types";
+import React from "react";
 
 // JSON data
 import pizzas from "../data/pizzas.json";
@@ -21,17 +19,17 @@ import PizzaSVG from "../assets/svg/pizza.svg";
 import SpecialOffer from "../hoc/SpecialOffer/SpecialOffer";
 
 const App: React.FC = (props) => {
-	// (window as any).hello();  /* to simulate source mapping error for TS */
+	// (window as any).hello();  /* to simulate source mapping error for TS if no source map! */
 
 	let content = <div className={styles["food-container"]}>No Content</div>;
 
-	// an object
+	// an interface
 	interface Navigation {
 		link: string;
 		title: string;
 	}
 
-	// an array of object
+	// an array of Navigation objects
 	type Navigations = Navigation[];
 
 	// using the Navigations type
@@ -49,8 +47,8 @@ const App: React.FC = (props) => {
 	}; 
 	*/
 
-	const specialOfferFood = pizzas.find((food) => food.specialOffer);
-	const normalOfferFood = pizzas.filter((food) => !food.specialOffer);
+	const specialOfferFood = pizzas.find((food) => food.specialOffer); // grabs a pizza that has a specialOffer prop
+	const normalOfferFood = pizzas.filter((food) => !food.specialOffer); // grabs the pizzas that are not special offers
 
 	if (pizzas) {
 		content = (
@@ -65,6 +63,7 @@ const App: React.FC = (props) => {
 					<Cart />
 				</div>
 
+				{/* show special offer IF specialOfferFood is a truthy value */}
 				{specialOfferFood && <SpecialOffer food={specialOfferFood} />}
 
 				<ul className={styles["food-container__ul"]}>
