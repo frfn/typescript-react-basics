@@ -36,11 +36,11 @@ interface Props {
 /* ---------------------------------------- */
 export const AppStateContext = createContext(DefaultAppState);
 
-/* ---------------------------------------------------- */
-/* 1. the setCart, giving it the type is should receive */
-/* ---------------------------------------------------- */
+/* ------------------------------------------------------------------------------------ */
+/* 1. the setCart, giving it the type is should receive | you can add more actions here */
+/* ------------------------------------------------------------------------------------ */
 export const AppDispatchContext /* AppSetStateContext */ = createContext<
-	| React.Dispatch<AddToCartAction>
+	| React.Dispatch<AddToCartAction | InitializeCartAction>
 	/* React.Dispatch<React.SetStateAction<IAppStateValue>>, not anymore since useState is not used */
 	| undefined
 >(undefined);
@@ -93,7 +93,7 @@ interface AddToCartAction extends Action<"ADD_TO_CART"> {
 	};
 }
 
-interface initializeCartAction extends Action<"INITIALIZE_CART"> {
+interface InitializeCartAction extends Action<"INITIALIZE_CART"> {
 	payload: {
 		cart: IAppStateValue["cart"]; // === cart: { items: CartItem[]; }
 	};
@@ -102,7 +102,7 @@ interface initializeCartAction extends Action<"INITIALIZE_CART"> {
 // adding more than one action? Use a union!
 export const reducer = (
 	state: IAppStateValue,
-	action: initializeCartAction | AddToCartAction
+	action: InitializeCartAction | AddToCartAction
 ) => {
 	switch (action.type) {
 		case "INITIALIZE_CART":
