@@ -1,5 +1,5 @@
 import React from "react";
-import { useStateDipatch } from "../../context/AppState";
+import { useStateDispatch } from "../../context/AppState";
 import { CartItem } from "../../context/AppState";
 
 export interface withAddToCartProps {
@@ -14,12 +14,12 @@ interface FoodVariable {
 /*   HoC Component | Wraps a component and gives it onAddToCart() functionality   */
 /* ------------------------------------------------------------------------------ */
 // the original props will be passed in when this HoC is used! <iAmAGenericArgument>
-function withAddToCart<OriginalProps>(
+function withAddToCart<OriginalProps extends withAddToCartProps>(
 	// React.ComponentType takes in an argument! ChildComponent must take a an argument!
 	ChildComponent: React.ComponentType<OriginalProps>
 ) {
 	const AddToCartHOC = (props: OriginalProps) => {
-		const dispatch = useStateDipatch();
+		const dispatch = useStateDispatch();
 
 		// giving a type to onAddToCart function, used [] to access withAddToCartProps and grab the '(item: CartItem) => void;' value
 		const onAddToCart: withAddToCartProps["onAddToCart"] = (
@@ -102,6 +102,37 @@ function withAddToCart<OriginalProps>(
 
 export default withAddToCart;
 
+/* ------------------- */
+/*   WithRenderProps   */
+/* ------------------- */
+interface Logger {
+	logger: () => void;
+}
+export const WithRenderProps: React.FC<{
+	children: (props: Logger) => JSX.Element;
+}> = ({ children }) => {
+	const logger = () => {
+		console.log("Hello!");
+	};
+
+	return children({ logger });
+};
+
+export const WithAddingToCartProps: React.FC<{
+	children: (props: withAddToCartProps) => JSX.Element;
+}> = ({ children }) => {
+	const dispatch = useStateDispatch();
+	const onAddToCart: withAddToCartProps["onAddToCart"] = (item) => {
+		dispatch({
+			type: "ADD_TO_CART",
+			payload: {
+				item,
+			},
+		});
+	};
+	return children({ onAddToCart });
+};
+
 /* 
 <button type="button" onClick={logger}>
 	PRINT ME, check console log
@@ -121,6 +152,6 @@ export default withAddToCart;
 // 			<ChildComponent />
 // 		</div>;
 // 	};
-// 	return AddToCartHOC;≤≤≤≤
+// 	return AddToCartHOC;
 // };
 // export default withAddToCart;

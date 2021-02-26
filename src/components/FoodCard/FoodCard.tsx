@@ -6,6 +6,10 @@ import { Food } from "../../types";
 
 // HoC
 import withAddToCart from "../../hoc/withAddToCart/withAddToCart";
+import {
+	WithRenderProps,
+	WithAddingToCartProps,
+} from "../../hoc/withAddToCart/withAddToCart";
 
 // import { CartItem, useStateDipatch } from "../../context/AppState"; /* Context API | the dispatch */
 import { withAddToCartProps } from "../../hoc/withAddToCart/withAddToCart";
@@ -41,6 +45,22 @@ const FoodCard: React.FC<Props> = ({ food, onAddToCart }) => {
 			<button type="button" onClick={onHandleAddToCart}>
 				{`Add To ${food.name} to Cart`}
 			</button>
+
+			<WithRenderProps>
+				{({ logger }) => {
+					return <button onClick={() => logger()}>Click Me</button>;
+				}}
+			</WithRenderProps>
+
+			<WithAddingToCartProps>
+				{({ onAddToCart }) => {
+					return (
+						<button>
+							Add To Cart.... {console.log(onAddToCart)}{" "}
+						</button>
+					);
+				}}
+			</WithAddingToCartProps>
 		</li>
 	);
 };

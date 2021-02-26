@@ -45,7 +45,7 @@ export const AppDispatchContext /* AppSetStateContext */ = createContext<
 /* ------------------------------------------------------------------------------------ */
 /* 3. Custom Hook | outsourced from FoodCard.tsx to check if the function is undefined! */
 /* ------------------------------------------------------------------------------------ */
-export const useStateDipatch /* useSetState */ = () => {
+export const useStateDispatch /* useSetState */ = () => {
 	// the useContext, FILLS in the information for createContext.
 	// at first it is undefined, but when given the value from the Provider, it WILL HAVE a value
 
