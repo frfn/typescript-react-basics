@@ -11,6 +11,13 @@ export interface withAddToCartProps {
 interface FoodVariable {
 	food: CartItem;
 }
+
+// const testingCode: withAddToCartProps = {
+// 	onAddToCart: (item: CartItem) => {
+// 		console.log(item);
+// 	},
+// };
+
 /* ------------------------------------------------------------------------------ */
 /*   HoC Component | Wraps a component and gives it onAddToCart() functionality   */
 /* ------------------------------------------------------------------------------ */
@@ -19,6 +26,7 @@ function withAddToCart<OriginalProps extends withAddToCartProps>(
 	// React.ComponentType takes in an argument! ChildComponent must take a an argument!
 	ChildComponent: React.ComponentType<OriginalProps>
 ) {
+	// function to be returned, normally written as: return (props) => {...} in a normal HoC
 	const AddToCartHOC = (
 		// ommitting the keyof withAddToCartProps | so when importing the wrapped component, I don't have to pass in the prop!
 		props: Omit<OriginalProps, keyof withAddToCartProps>

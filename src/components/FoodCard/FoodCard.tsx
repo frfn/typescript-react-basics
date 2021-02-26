@@ -20,6 +20,8 @@ interface Props extends withAddToCartProps {
 }
 
 // onAddToCart comes from the HoC, it passed on a function called onAddToCart to this component, which is the CHILD COMPONENT!
+// by adding the onAddToCart function, we are fullfilling this type: withAddToCart<OriginalProps extends withAddToCartProps>
+// it is saying that whatever is passed in the HoC, it should have onAddTocCart function!
 const FoodCard: React.FC<Props> = ({ food, onAddToCart }) => {
 	const onHandleAddToCart = () => {
 		// if truthy, execute
