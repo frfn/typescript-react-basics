@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createRef } from "react";
 import styles from "./Cart.module.css";
 
 // react icons
@@ -24,6 +24,8 @@ interface State {
 
 // 3. creation of class component, take note of the argument <Props, State>
 class Cart extends React.Component<Props, State> {
+	#containerRef: React.RefObject<HTMLDivElement>;
+
 	// constructor `state` vs just `state`
 	constructor(props: Props) {
 		super(props);
@@ -32,31 +34,51 @@ class Cart extends React.Component<Props, State> {
 			isOpen: false,
 		};
 
-		// this.toggleIsOpen = this.toggleIsOpen.bind(this); /* good to know, if function is NOT an arrow function, you have to use .bind(this) to bind the function to THIS component! */
+		// this.toggleIsOpenClose = this.toggleIsOpenClose.bind(this); /* good to know, if function is NOT an arrow function, you have to use .bind(this) to bind the function to THIS component! */
+		this.#containerRef = createRef();
 	}
 
 	// if toggleIsOpen(event?: MouseEvent) { .. you must .bind(this)}
 
 	// ECMAScript class field feature, Arrow Function, `this` keyword is binded automatically to the toggleIsOpen function
-	toggleIsOpen = (
+	toggleIsOpenClose = (
 		event?: React.MouseEvent<HTMLButtonElement, MouseEvent>
 	) => {
 		// make it really specific, type safe
 		if ((event?.target as HTMLElement).nodeName === "BUTTON") {
-			console.log("Hi!");
+			// console.log("Hi!");
 		}
 
 		this.setState((prevState) => {
-			return {
-				...prevState, // no need since the only prop is `isOpen`
-				isOpen: !prevState.isOpen,
-			};
+			return { isOpen: !prevState.isOpen };
 		});
 	};
 
 	// useContext for cart object, so you don't have to use the <AppStateContext.Consumer>{(context) => { JSX }}<AppStateContext.Consumer>
 	// by doing so, the inferring is gone and you may need to explicitly type safe as shown below!
 	static contextType = AppStateContext;
+
+	/* ----------------------------------------------- */
+	/*  LifeCycle Hook | Handling Original DOM Events  */
+	/* ----------------------------------------------- */
+	// I mean, it works pretty great, but it's still handling the original DOM, not good.
+	handleOutsideClick = (e: MouseEvent) => {
+		// if the containerRef.current IS a truthy value AND if the div element doesn't contain the element the user clicked on!
+		if (
+			this.#containerRef.current &&
+			!this.#containerRef.current.contains(e.target as Node) // because there is an onClick on button which gives an e.target?
+		) {
+			this.setState({ isOpen: false });
+		}
+	};
+
+	componentDidMount = () => {
+		document.addEventListener("mousedown", this.handleOutsideClick);
+	};
+
+	componentWIllUnmount = () => {
+		document.removeEventListener("mousedown", this.handleOutsideClick);
+	};
 
 	render() {
 		let content = "Empty Cart";
@@ -86,9 +108,9 @@ class Cart extends React.Component<Props, State> {
 		}
 
 		return (
-			<div className={styles["cart-container"]}>
+			<div className={styles["cart-container"]} ref={this.#containerRef}>
 				<button
-					onClick={(e) => this.toggleIsOpen(e)}
+					onClick={(e) => this.toggleIsOpenClose(e)}
 					className={styles["cart-container__button"]}
 					type="button"
 				>
@@ -137,3 +159,22 @@ class Cart extends React.Component<Props, State> {
 }
 
 export default Cart;
+
+/* 
+event.stopPropagation - event bubbling!
+
+// must have here, stops the propagation of event bubbling
+	event && event.stopPropagation();
+
+this.closeMenu = this.closeMenu.bind(this);
+
+closeMenu = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+	// must have here, stops the propagation of event bubbling
+	event.stopPropagation();
+	this.setState({
+		isOpen: false,
+	});
+};
+
+onClick={(e) => this.closeMenu(e)}
+*/

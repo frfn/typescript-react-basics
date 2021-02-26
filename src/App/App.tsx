@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // JSON data
 import pizzas from "../data/pizzas.json";
@@ -46,6 +46,17 @@ const App: React.FC = (props) => {
 		price: 17.99,
 	}; 
 	*/
+
+	// example of how to use componentWillUnmount and componentDidMount
+	/* useEffect(() => {
+		const listener = () => {
+			alert("Hello!");
+		};
+		document.addEventListener("mousedown", listener);
+		return () => {
+			document.removeEventListener("mousedown", listener);
+		};
+	}, []); */
 
 	const specialOfferFood = pizzas.find((food) => food.specialOffer); // grabs a pizza that has a specialOffer prop
 	const normalOfferFood = pizzas.filter((food) => !food.specialOffer); // grabs the pizzas that are not special offers
