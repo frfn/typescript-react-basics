@@ -55,8 +55,16 @@ const FoodCard: React.FC<Props> = ({ food, onAddToCart }) => {
 			<WithAddingToCartProps>
 				{({ onAddToCart }) => {
 					return (
-						<button>
-							Add To Cart.... {console.log(onAddToCart)}{" "}
+						<button
+							type="button"
+							/* onClick={onAddToCart({
+								id: food.id,
+								name: food.name,
+								price: food.price,
+								quantity: 1,
+							})} */
+						>
+							Add To Cart....
 						</button>
 					);
 				}}

@@ -3,7 +3,8 @@ import { useStateDispatch } from "../../context/AppState";
 import { CartItem } from "../../context/AppState";
 
 export interface withAddToCartProps {
-	onAddToCart?: (item: CartItem) => void; // for me, I don't want to pass anything down to the child tbh, keep it local!
+	// LAST EDIT: I took the question mark out, getting lots of 'undefined' bs
+	onAddToCart: (item: CartItem) => void; // FIRST EDIT: for me, I don't want to pass anything down to the child tbh, keep it local! so I made onAddToCart? optional
 	// onAddToCart: (item: Omit<CartItem, 'quantity'>) => void
 }
 
@@ -18,7 +19,10 @@ function withAddToCart<OriginalProps extends withAddToCartProps>(
 	// React.ComponentType takes in an argument! ChildComponent must take a an argument!
 	ChildComponent: React.ComponentType<OriginalProps>
 ) {
-	const AddToCartHOC = (props: OriginalProps) => {
+	const AddToCartHOC = (
+		// ommitting the keyof withAddToCartProps | so when importing the wrapped component, I don't have to pass in the prop!
+		props: Omit<OriginalProps, keyof withAddToCartProps>
+	) => {
 		const dispatch = useStateDispatch();
 
 		// giving a type to onAddToCart function, used [] to access withAddToCartProps and grab the '(item: CartItem) => void;' value
@@ -66,9 +70,13 @@ function withAddToCart<OriginalProps extends withAddToCartProps>(
 		/*     end of my solution     */
 		/* -------------------------- */
 
+		// this is an assertion, there is a problem within the TS language when it comes to this. /* {...(props as OriginalProps)} */
 		return (
 			<div>
-				<ChildComponent {...props} onAddToCart={onAddToCart} />
+				<ChildComponent
+					{...(props as OriginalProps)}
+					onAddToCart={onAddToCart}
+				/>
 				<div
 					style={{
 						display: "flex",
