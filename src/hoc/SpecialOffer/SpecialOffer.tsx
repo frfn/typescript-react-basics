@@ -8,10 +8,8 @@ import withAddToCart from "../../hoc/withAddToCart/withAddToCart";
 import { Food } from "../../types";
 import { withAddToCartProps } from "../../hoc/withAddToCart/withAddToCart";
 
-// custom hook
-import { CartItem, useStateDipatch } from "../../context/AppState";
-
 interface Props extends withAddToCartProps {
+	// withAddToCartProps adds the onAddToCart to the Props, it is a function!
 	food: Food;
 }
 
@@ -42,6 +40,9 @@ export default withAddToCart(SpecialOffer);
 
 /* 
 Code used to be here, now outsourced to the HoC
+
+// custom hook
+import { CartItem, useStateDipatch } from "../../context/AppState";
 
 // custom hook | provides the dipatch intitialized in AppState.tsx as well as check to see if undefined
 const dispatch = useStateDipatch();

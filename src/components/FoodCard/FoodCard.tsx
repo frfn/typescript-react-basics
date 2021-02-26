@@ -1,14 +1,16 @@
 import React, { useContext } from "react";
 import styles from "./FoodCard.module.css";
 
-import { Food } from "../../types"; // TS Interface Type
+// TS Interface Type
+import { Food } from "../../types";
 
-import withAddToCart from "../../hoc/withAddToCart/withAddToCart"; // HoC
+// HoC
+import withAddToCart from "../../hoc/withAddToCart/withAddToCart";
 
 // import { CartItem, useStateDipatch } from "../../context/AppState"; /* Context API | the dispatch */
 import { withAddToCartProps } from "../../hoc/withAddToCart/withAddToCart";
 
-// 1. name the props that will be passed in
+// 1. create interface Props
 interface Props extends withAddToCartProps {
 	food: Food; // Food type should have id, name, description, price | it's initialized and OUTSOURCED in types.ts!
 }
