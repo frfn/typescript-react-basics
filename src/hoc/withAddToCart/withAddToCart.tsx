@@ -3,9 +3,13 @@ import { useStateDipatch } from "../../context/AppState";
 import { CartItem } from "../../context/AppState";
 
 export interface withAddToCartProps {
-	onAddToCart?: (item: CartItem) => void;
+	onAddToCart?: (item: CartItem) => void; // for me, I don't want to pass anything down to the child tbh, keep it local!
+	// onAddToCart: (item: Omit<CartItem, 'quantity'>) => void
 }
 
+interface FoodVariable {
+	food: CartItem;
+}
 /* ------------------------------------------------------------------------------ */
 /*   HoC Component | Wraps a component and gives it onAddToCart() functionality   */
 /* ------------------------------------------------------------------------------ */
@@ -17,8 +21,11 @@ function withAddToCart<OriginalProps>(
 	const AddToCartHOC = (props: OriginalProps) => {
 		const dispatch = useStateDipatch();
 
-		//
-		const onAddToCart = (item: CartItem) => {
+		// giving a type to onAddToCart function, used [] to access withAddToCartProps and grab the '(item: CartItem) => void;' value
+		const onAddToCart: withAddToCartProps["onAddToCart"] = (
+			item: CartItem
+			// he removes the CartItem type here because he used Omit to remove quantity! Also TS will infer the types anyways for the argument if given a type for the function!
+		) => {
 			dispatch({
 				type: "ADD_TO_CART",
 				// this works because the item is of type CartItem!
@@ -28,9 +35,64 @@ function withAddToCart<OriginalProps>(
 			});
 		};
 
+		/* ----------------------------------------------------- */
+		/*      I created this with intuition! - my solution     */
+		/* ----------------------------------------------------- */
+		const foodVariable = (props as never) as FoodVariable; // it was suggested to assert as 'never' first then as FoodVariable,
+
+		// props structure is props: {food: {id, name, price, quantity}}
+		// created FoodVariable interface to get the desired structure and traverse to the data we need!
+
+		const foodItem: CartItem = {
+			id: foodVariable.food.id,
+			name: foodVariable.food.name,
+			price: foodVariable.food.price,
+			quantity: 1,
+		};
+
+		const onAddToCartThroughHoC /* : withAddToCartProps["onAddToCart"] only here to show that this is the onAddToCart function */ = (
+			item: CartItem
+		) => {
+			dispatch({
+				type: "ADD_TO_CART",
+				payload: {
+					item, // this can be named item because this is inferred that this will be item: { id, name, etc}
+
+					// i was doing foodItem just by itself, and it was NOT working
+				},
+			});
+		};
+		/* -------------------------- */
+		/*     end of my solution     */
+		/* -------------------------- */
+
 		return (
 			<div>
 				<ChildComponent {...props} onAddToCart={onAddToCart} />
+				<div
+					style={{
+						display: "flex",
+						flexFlow: "column nowrap",
+					}}
+				>
+					<button
+						style={{
+							alignSelf: "center",
+							outline: "none",
+							padding: "10px",
+							background: "#fab1a0",
+							color: "white",
+							fontSize: "20px",
+							borderRadius: "20px",
+							border: "2px solid white",
+							width: "500px",
+							marginRight: "40px",
+							cursor: "pointer",
+						}}
+						onClick={() => onAddToCartThroughHoC(foodItem)}
+						type="button"
+					>{`Add To Cart Through HoC! ${foodItem.name}`}</button>
+				</div>
 			</div>
 		);
 	};
@@ -39,6 +101,16 @@ function withAddToCart<OriginalProps>(
 }
 
 export default withAddToCart;
+
+/* 
+<button type="button" onClick={logger}>
+	PRINT ME, check console log
+</button> 
+*/
+
+/* confirmed something that was obvious -- if the child component is rendered with this HoC, it renders with the child component individually, only maintaining the props that are PASSED into the component */
+
+/* You can make this more friendly by passing the props in! */
 
 /* -------------------------------------------------------------- */
 /* you MUST use `extends` if you want to write a generic arrow fn */

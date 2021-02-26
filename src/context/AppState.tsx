@@ -1,7 +1,7 @@
 import React, {
 	useReducer /* useState */,
 	createContext,
-	useContext,
+	useContext /* providing the value! this fills in the context with whatever the value is! */,
 	useEffect,
 } from "react";
 
@@ -26,33 +26,30 @@ const DefaultAppState: IAppStateValue = {
 	},
 };
 
-/* -- Props, this can be deleted tbh, just for me to see -- */
+/* -- Props, this can be deleted because children is built in to be used without creating a Props interface -- */
 interface Props {
 	children?: React.ReactNode; // copied from hovering over "props"
 }
 
-/* ---------------------------------------- */
-/* 1. the cart context, giving it structure */
-/* ---------------------------------------- */
-export const AppStateContext = createContext(DefaultAppState);
+/* ----------------------------------------------------------------------------------------------- */
+/* 1. creating context | the value passed must be of the same type | you can add more actions here */
+/* ----------------------------------------------------------------------------------------------- */
+export const AppStateContext = createContext(DefaultAppState); // must be of IAppStateValue
 
-/* ------------------------------------------------------------------------------------ */
-/* 1. the setCart, giving it the type is should receive | you can add more actions here */
-/* ------------------------------------------------------------------------------------ */
 export const AppDispatchContext /* AppSetStateContext */ = createContext<
 	| React.Dispatch<AddToCartAction | InitializeCartAction>
 	/* React.Dispatch<React.SetStateAction<IAppStateValue>>, not anymore since useState is not used */
 	| undefined
->(undefined);
+>(undefined); // initially undefined, but will be filled with the dispatch function!
 
-/* ------------------------------------------------------------------------------------------------ */
-/* 3. Custom Hook | outsourced so it is less bloated in FoodCard.tsx & to check if it is undefined! */
-/* ------------------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------ */
+/* 3. Custom Hook | outsourced from FoodCard.tsx to check if the function is undefined! */
+/* ------------------------------------------------------------------------------------ */
 export const useStateDipatch /* useSetState */ = () => {
 	// the useContext, FILLS in the information for createContext.
-	// at first it is undefined, but when given the value with Provider programmed at the bottom, it WILL HAVE a value
+	// at first it is undefined, but when given the value from the Provider, it WILL HAVE a value
 
-	// AppSetStateContext.Provider value={setState} gives the `value` of dispatch
+	// AppSetStateContext.Provider value={setState} gives the `value` of dispatch, which is passed as shown below
 	// when using useStateDispatch in FoodCard.tsx, it WILL be the useStateDispatch function because the component is WRAPPED with the provider
 
 	// this here just gives it a structure, the provider down below gives it its value
@@ -67,8 +64,6 @@ export const useStateDipatch /* useSetState */ = () => {
 
 	// and being able to return the function if it is not undefined.
 	return dispatch;
-
-	// this will be FILLED in IF this custom is called in a component that is wrapped with the Provider component!
 };
 
 /* ------------ */
@@ -102,9 +97,10 @@ interface InitializeCartAction extends Action<"INITIALIZE_CART"> {
 // adding more than one action? Use a union!
 export const reducer = (
 	state: IAppStateValue,
-	action: InitializeCartAction | AddToCartAction
+	action: InitializeCartAction | AddToCartAction // the interface is used here, says that the action dispatched must follow a structure
 ) => {
 	switch (action.type) {
+		// grabbing from local storage and putting it into the payload
 		case "INITIALIZE_CART":
 			const newState: IAppStateValue = { cart: action.payload.cart };
 
@@ -167,7 +163,7 @@ export const reducer = (
 /* 2. the component that will provide the context with data */
 /* -------------------------------------------------------- */
 
-// there are no errors for the Props since children is the only prop we will need, if more props, we MUST create an interface!
+// there are no errors for the Props since children is the only prop we will need, if more props, we MUST create a Props interface!
 const AppStateProvider: React.FC<Props> = ({ children }) => {
 	// state is an object => {cart: {items: [] } }
 	const [state, dispatch /* setState */] = useReducer(
@@ -184,11 +180,13 @@ const AppStateProvider: React.FC<Props> = ({ children }) => {
 	// 1. loads the existing cart first!
 	useEffect(() => {
 		const existingCart = localStorage.getItem("cart");
+		// if existingCart is truthy value
 		if (existingCart) {
 			dispatch({
 				type: "INITIALIZE_CART",
 				payload: {
-					// parsing is needed since the item is JSON stringified!
+					// parsing is needed since the item is JSON stringified
+					// in older projects we grabbed the data from Firebase, which was probably parsed from a JSON into a JS object already,
 					cart: JSON.parse(existingCart),
 				},
 			});
@@ -214,10 +212,10 @@ export default AppStateProvider;
 
 /* 
 
-1. React.FC takes in an object by default, it can have a prop argument!
+1. React.FC takes in an object by default, it can have a prop argument! That prop arg only has chidren built in, add Props interface to add more
 `const mockFnComponent: React.FC = (props) => ( <div> Hi </div> );`
 
-2. useState is a `generic` | by using the DefaultAppState, TS can infer that it is of type IAppStateValue
+2. useState is a `generic` | by using the DefaultAppState, TS can infer that it is of type IAppStateValue, shown below
 `const [cartZero, setCartZero] = useState<IAppStateValue>(undefined);`
 
 */
